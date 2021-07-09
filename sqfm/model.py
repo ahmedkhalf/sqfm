@@ -41,6 +41,6 @@ class FileManagerModel(QAbstractTableModel):
         return 1
 
     def data(self, ind: QModelIndex, role: Qt.ItemDataRole):
-        if role == Qt.ItemDataRole.DisplayRole:
+        if role == Qt.DisplayRole:
             return self.files[ind.row()].name
         return None
