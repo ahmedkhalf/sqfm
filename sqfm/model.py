@@ -19,7 +19,6 @@ class FileManagerModel(QAbstractTableModel):
     def open_item(self, ind: int):
         item = self.file_browser.files[ind]
         if item.isDir():
-            print("isDir")
             self.file_browser.current_pwd = QDir(item.filePath())
             self.get_files()
 
