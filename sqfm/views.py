@@ -30,8 +30,7 @@ class SimpleTableView(QTableView):
             self.data_model.open_item(self.currentIndex().row())
         elif event.key() == Qt.Key_H:
             self.data_model.go_back()
-        # elif event.key() == Qt.Key_Period:
-        #     self.data_model.show_hidden = not self.data_model.show_hidden
-        #     self.data_model.get_files()
+        elif event.key() == Qt.Key_Period:
+            self.data_model.toggle_hidden()
         else:
             super().keyPressEvent(event)

@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import List, Optional
 
 from PyQt5.QtCore import QAbstractTableModel, QDir, QModelIndex, QObject, Qt, QFileInfo
@@ -26,6 +25,10 @@ class FileManagerModel(QAbstractTableModel):
         if self.file_browser.current_pwd.cdUp():
             self.get_files()
 
+    def toggle_hidden(self):
+        self.file_browser.show_hidden = not self.file_browser.show_hidden
+        self.get_files()
+
     def rowCount(self, ind: QModelIndex):
         return len(self.file_browser.files)
 
@@ -43,9 +46,15 @@ class FileBrowser:
         self.current_pwd: QDir = QDir.home()
 
         self.files: List[QFileInfo] = []
+        self.show_hidden = False
 
     def list_files(self):
-        self.files = self.current_pwd.entryInfoList()
+        filter = QDir.AllEntries | QDir.NoDotAndDotDot
+        if self.show_hidden:
+            filter |= QDir.Hidden
+
+        sort = QDir.Name | QDir.DirsFirst | QDir.IgnoreCase
+        self.files = self.current_pwd.entryInfoList(filters=filter, sort=sort)  # type: ignore
 
     def refresh(self):
         pass
