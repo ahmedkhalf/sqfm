@@ -40,6 +40,13 @@ class FileManagerModel(QAbstractTableModel):
             return self.file_browser.files[ind.row()].fileName()
         return None
 
+    def headerData(self, section: int, orientation: Qt.Orientation, role: Qt.ItemDataRole):
+        if orientation == Qt.Horizontal:
+            if section == 0:
+                if role == Qt.DisplayRole:
+                    return "Name"
+        return None
+
 
 class FileBrowser:
     def __init__(self) -> None:
