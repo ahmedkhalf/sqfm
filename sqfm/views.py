@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QAbstractItemView, QTableView
+from PyQt5.QtWidgets import QAbstractItemView, QTableView, QHeaderView
 
 from .model import FileManagerModel
 
@@ -12,10 +12,13 @@ class SimpleTableView(QTableView):
         self.setSelectionMode(QAbstractItemView.SingleSelection)
         # Smooth scroll
         self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.setSortingEnabled(True)
+        self.sortByColumn(0, Qt.AscendingOrder)
 
         self.data_model: FileManagerModel = model
         self.setModel(model)
         self.selectRow(0)
+        self.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_K:

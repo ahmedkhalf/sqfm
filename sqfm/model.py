@@ -47,6 +47,14 @@ class FileManagerModel(QAbstractTableModel):
                     return "Name"
         return None
 
+    def sort(self, column: int, order: Qt.SortOrder):
+        if order == Qt.AscendingOrder:
+            self.file_browser.sort_reversed = False
+        elif order == Qt.DescendingOrder:
+            self.file_browser.sort_reversed = True
+
+        self.get_files()
+
 
 class FileBrowser:
     def __init__(self) -> None:
@@ -55,12 +63,17 @@ class FileBrowser:
         self.files: List[QFileInfo] = []
         self.show_hidden = False
 
+        self.sort_item = QDir.Name
+        self.sort_reversed = False
+
     def list_files(self):
         filter = QDir.AllEntries | QDir.NoDotAndDotDot
         if self.show_hidden:
             filter |= QDir.Hidden
 
-        sort = QDir.Name | QDir.DirsFirst | QDir.IgnoreCase
+        sort = self.sort_item | QDir.DirsFirst | QDir.IgnoreCase | QDir.LocaleAware
+        if self.sort_reversed:
+            sort |= QDir.Reversed
         self.files = self.current_pwd.entryInfoList(filters=filter, sort=sort)  # type: ignore
 
     def refresh(self):
